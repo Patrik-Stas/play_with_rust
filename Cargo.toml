@@ -1,0 +1,24 @@
+[package]
+name = "typesvariables"
+version = "0.1.0"
+authors = ["Patrik Stas <patrik.stas@absa.co.za>"]
+edition = "2018"
+
+[dependencies]
+futures = "0.1"
+tokio = "0.1.22"
+tokio-core      = "0.1"
+future-by-example = "0.1"
+rand = "0.7.0"
+hyper = "0.12.12"
+reqwest = "0.9.20"
+
+quick-error = "=1.2.2"
+
+error-chain = "=0.12.0"
+
+
+failure = "=0.1.5"
+failure_derive = "=0.1.5"
+backtrace = "=0.3.18"
+
