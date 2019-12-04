@@ -1,0 +1,11 @@
+[package]
+name = "bouncy4"
+version = "0.1.0"
+authors = ["Patrik Stas <patrik.stas@absa.co.za>"]
+edition = "2015"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pancurses = "0.16.1"
+ncurses = "= 5.99.0"

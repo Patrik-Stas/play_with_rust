@@ -8,6 +8,10 @@ extern crate error_chain;
 extern crate failure;
 #[macro_use]
 extern crate failure_derive;
+extern crate chrono;
+
+#[macro_use]
+extern crate futures;
 
 mod sh;
 mod circle;
@@ -47,6 +51,15 @@ mod futures_either;
 //mod futures_in_ifs;
 mod lifetime_futures;
 mod futures_in_parallel;
+mod devto_future_custom_implementation;
+mod devto_future_custom_implementation2;
+mod devto_streams;
+mod futures_to_streams;
+mod snoyman_iterators;
+mod snoyman_3;
+mod snoyman_closures;
+mod snoyman_streams_exercise6;
+mod snoyman_streams_exercise7;
 mod str_compare;
 mod so1;
 mod channels;
@@ -1227,7 +1240,7 @@ fn my_ref_test()
 //    println!("foo_ref is {}", foo_ref);
 }
 
-extern crate futures;
+
 extern crate future_by_example;
 extern crate tokio_core;
 
@@ -1583,5 +1596,14 @@ fn main() {
 //    pw_copy_trait::run();
 //    pw_clone_options::run();
 //    futures_either::run();
-    futures_in_parallel::run();
+//    futures_in_parallel::run();
+//    future_custom_implementation::run();
+//    devto_future_custom_implementation2::run();
+//    devto_streams::run();
+//      futures_to_streams::run();
+//    snoyman_iterators::run();
+//    snoyman_3::run();
+//    snoyman_closures::run();
+//    snoyman_streams_exercise6::run();
+    snoyman_streams_exercise7::run();
 }

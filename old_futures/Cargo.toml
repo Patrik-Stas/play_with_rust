@@ -12,6 +12,10 @@ future-by-example = "0.1"
 rand = "0.7.0"
 hyper = "0.12.12"
 reqwest = "0.9.20"
+futures-cpupool = "0.1.8"
+chrono = "0.4.10"
+tokio-timer = "0.2.12"
+
 
 quick-error = "=1.2.2"
 
