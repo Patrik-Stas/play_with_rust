@@ -14,44 +14,6 @@ pub fn create_vector(how_many: i32) -> Vec<i32> {
     (0..how_many).map(|m| m * 2).collect()
 }
 
-//pub fn expensive_operation(how_many: i32) -> Vec<Box<dyn Future<Item=(), Error=()>>> {
-//    let mapped = (0..how_many)
-//        .map(|i| {
-//            let f = futures::future::ok(())
-//                .and_then(|_| {
-//                    println!("Starting expensive stuff");
-//                    future::ok(())
-//                }).and_then(|_| {
-//                    tokio_timer::sleep(Duration::new(1, 0)).map_err(|e| ())
-//            }).and_then(|_| {
-//                println!("Finished expensive stuff");
-//                future::ok(())
-//            });
-//            Box::new(f)
-//        })
-//        .collect();
-//    mapped
-//}
-
-//pub fn expensive_operation(how_many: i32) {
-//    let mapped: Vec<Box<dyn Future<Item=(), Error=()>>> = (0..how_many)
-//        .map(|i| {
-//            let f = futures::future::ok(());
-//            Box::new(f)
-//        })
-//        .collect();
-//}
-
-
-
-//pub fn expensive_operations_2(how_many: i32) {
-//    let mapped: Vec<Box<dyn Future<Item=i32, Error=()>>> = (0..how_many)
-//        .map(|i| {
-//            Box::new(futures::future::ok(132))
-//        })
-//        .collect();
-//}
-
 pub fn collect_bunch_of_integers(how_many: i32) {
     let mapped: Vec<Box<i32>> = (0..how_many)
         .map(|i| {
