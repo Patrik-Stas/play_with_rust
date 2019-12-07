@@ -30,13 +30,6 @@ impl ExpensiveFuture {
         }
     }
 
-    pub fn wait_spin(&self) {
-        while Utc::now() < self.end_time {
-            println!("Spinning ")
-        }
-        println!("the time has come == {:?}!", self.end_time);
-    }
-
     pub fn wait_blocking(&self) {
         while Utc::now() < self.end_time {
             let delta_sec = self.end_time.timestamp() - Utc::now().timestamp();
@@ -63,22 +56,6 @@ impl ExpensiveFuture {
     }
 }
 
-//impl Future for WaitInAnotherThread {
-//    type Item = ();
-//    type Error = Box<Error>;
-//
-//    fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
-//        while Utc::now() < self.end_time {
-//            let delta_sec = self.end_time.timestamp() - Utc::now().timestamp();
-//            if delta_sec > 0 {
-//                thread::sleep(::std::time::Duration::from_secs(delta_sec as u64));
-//            }
-//        }
-//        println!("the time has come == {:?}!", self.end_time);
-//        Ok(Async::Ready(()))
-//    }
-//}
-
 impl Future for ExpensiveFuture {
     type Item = ();
     type Error = ();
@@ -100,20 +77,3 @@ impl Future for ExpensiveFuture {
         }
     }
 }
-
-// turrn into [test]
-//pub fn run()
-//{
-////    let wiat = WaitInAnotherThread::new(10);
-////    println!("wait spin started");
-////    wiat.wait_blocking();
-////    println!("wait spin completed");
-//
-//    let mut reactor = Core::new().unwrap();
-//
-//    let wiat = ExpensiveFuture::new(3, "runthread".to_owned());
-//    println!("wait future started");
-////    let ret = reactor.run(wiat).unwrap();
-//    let ret = wiat.wait();
-//    println!("wait future completed. ret == {:?}", ret);
-//}

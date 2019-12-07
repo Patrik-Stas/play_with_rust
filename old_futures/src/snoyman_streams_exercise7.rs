@@ -75,66 +75,67 @@ pub fn create_future_cheap_send() -> Box<dyn Future<Item=(), Error=()> + Send> {
 pub fn create_future_cheap() -> Box<dyn Future<Item=(), Error=()>> {
     let f = future::ok(())
         .and_then(|_| {
-            println!("Starting cheap stuff");
+            println!("Started cheap Future");
             future::ok(())
         }).and_then(|_| {
-        println!("Finished cheap stuff");
-        future::ok(())
+            println!("Finished cheap Future");
+            future::ok(())
     });
     Box::new(f)
 }
 
-pub fn create_future_expensive_send(id: i32) -> Box<dyn Future<Item=(), Error=()> + Send> {
+pub fn create_future_expensive_send(id: u32) -> Box<dyn Future<Item=(), Error=()> + Send> {
     let f = future::ok(())
         .and_then(|_| {
-            println!("Starting expensive stuff");
+            println!("Started expensive Future+Send");
             future::ok(())
         }).and_then(move |_| {
-            println!("Starting sleep");
             tokio_timer::sleep(Duration::new(1, 0)).map_err(|e| ())
         }).and_then(|_| {
-            println!("Finished expensive stuff");
+            println!("Finished expensive Future+Send");
             future::ok(())
     });
     Box::new(f)
 }
 
-pub fn create_future_expensive(id: i32) -> Box<dyn Future<Item=(), Error=()>> {
+pub fn create_future_expensive(id: u32) -> Box<dyn Future<Item=(), Error=()>> {
     let f = future::ok(())
         .and_then(|_| {
-            println!("Starting expensive stuff");
+            println!("Started expensive Future");
             future::ok(())
         }).and_then(move |_| {
-//            println!("expensive Iteration starts");
-//            let mut whatever = 0;
-//            for i in 1..100000 {
-//                whatever+=1;
-//                println!("calculation {}", &id);
-//            }
             ExpensiveFuture::new(3, format!("expensive future {}", &id))
-    }).and_then(|_| {
-        println!("Finished expensive stuff");
-        future::ok(())
-    });
+        }).and_then(|_| {
+            println!("Finished expensive Future");
+            future::ok(())
+        });
     Box::new(f)
 }
 
 
-pub fn create_5_futures_expensive_send() -> Vec<Box<dyn Future<Item=(), Error=()> + Send>>
+pub fn create_futures_expensive(n: u32) -> Vec<Box<dyn Future<Item=(), Error=()>>>
 {
-    vec![create_future_expensive_send(0), create_future_expensive_send(1), create_future_expensive_send(2), create_future_expensive_send(3), create_future_expensive_send(4)]
+    let mut futures: Vec<Box<dyn Future<Item=(), Error=()>>> = vec![];
+    for i in 0..n {
+        let f = create_future_expensive(n);
+        futures.push(f);
+    };
+    futures
+//    vec![create_future_expensive(0), create_future_expensive(1), create_future_expensive(2), create_future_expensive(3), create_future_expensive(4)]
 }
 
-pub fn create_5_futures_cheap() -> Vec<Box<dyn Future<Item=(), Error=()>>>
-{
-    vec![create_future_cheap(), create_future_cheap(), create_future_cheap(), create_future_cheap(), create_future_cheap()]
-}
 
-pub fn create_5_futures_expensive() -> Vec<Box<dyn Future<Item=(), Error=()>>>
+//pub fn create_futures<T>(n: u32, create_future: Box<dyn Fn(u32) -> T>) -> Vec<T> // this also works if you box the clojure
+// The advantage of above is we could pass clojure, whereas with fn only functions
+pub fn create_futures<T>(n: u32, create_future: fn(u32) -> T) -> Vec<T>
 {
-    vec![create_future_expensive(0), create_future_expensive(1), create_future_expensive(2), create_future_expensive(3), create_future_expensive(4)]
+    let mut futures: Vec<T> = vec![];
+    for i in 0..n {
+        let f = create_future(n as u32);
+        futures.push(f);
+    };
+    futures
 }
-
 
 pub fn simple() {
     let range = 1..100;
@@ -238,10 +239,10 @@ pub fn foreach_stream_no_buffer() {
     tokio::run(multiplier);
 }
 
-
-pub fn stream_expensive_futures_on_tokio() {
+pub fn stream_expensive_futures_with_send_on_tokio() {
     let PAR = 20;
-    let futures = create_5_futures_expensive_send();
+//    let futures = create_5_futures_expensive_send();
+    let futures = create_futures(6, create_future_expensive_send);
 
     let stream = stream::iter_ok::<_, ()>(futures);
 //    let stream = stream::futures_unordered(futures);
@@ -254,24 +255,22 @@ pub fn stream_expensive_futures_on_tokio() {
     tokio::run(buffered_stream);
 }
 
-pub fn stream_cheap_futures_blocking() {
+pub fn stream_expensive_futures_blocking() {
     let PAR = 20;
-    let futures = create_5_futures_expensive();
+    let futures = create_futures(6, create_future_expensive);
 
     let stream = stream::iter_ok::<_, ()>(futures);
     let buffered_stream = stream
-        .buffer_unordered(5)
+        .buffer_unordered(2)
         .for_each(|_| {
             println!("Resolved stream value",);
             future::ok(())
         });
-    buffered_stream.wait();
+    buffered_stream.wait(); // if future does not implement Send trait, it can't be executed on tokio
 }
-
 
 pub fn run_expensive_future()
 {
-//    let f = create_future_expensive();
     let f = create_future_expensive_send(0);
     tokio::run(f);
     println!("Finished tokio interval example");
@@ -283,7 +282,6 @@ pub fn run_tokio_sleep_with_wait()
     tokio_timer::sleep(Duration::new(2, 0)).map_err(|e| ()).wait();
     println!("Finished");
 }
-
 
 pub fn run_tokio_sleep_with_tokio()
 {
@@ -320,6 +318,6 @@ pub fn run() {
 //    run_tokio_sleep_with_wait();
 //    run_tokio_sleep_with_tokio();
 //    run_tokio_interval();
-//    stream_expensive_futures_on_tokio();
-    stream_cheap_futures_blocking();
+    stream_expensive_futures_with_send_on_tokio();
+    stream_expensive_futures_blocking();
 }
