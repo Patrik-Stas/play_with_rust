@@ -60,6 +60,8 @@ mod snoyman_3;
 mod snoyman_closures;
 mod snoyman_streams_exercise6;
 mod snoyman_streams_exercise7;
+mod ExpensiveFuture;
+mod tokio_example_resolveconnect;
 mod str_compare;
 mod so1;
 mod channels;
@@ -1606,4 +1608,5 @@ fn main() {
 //    snoyman_closures::run();
 //    snoyman_streams_exercise6::run();
     snoyman_streams_exercise7::run();
+//    tokio_example_resolveconnect::run();
 }

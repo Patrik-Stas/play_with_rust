@@ -15,15 +15,15 @@ use chrono::prelude::*;
 use std::error::Error;
 use tokio_core::reactor::Core;
 
-pub struct WaitInAnotherThread {
+pub struct ExpensiveFuture {
     end_time: DateTime<Utc>,
     running: bool,
     thread_name: String
 }
 
-impl WaitInAnotherThread {
-    pub fn new(delay_seconds: i64, thread_name: String) -> WaitInAnotherThread {
-        WaitInAnotherThread {
+impl ExpensiveFuture {
+    pub fn new(delay_seconds: i64, thread_name: String) -> ExpensiveFuture {
+        ExpensiveFuture {
             end_time:  Utc::now() +  chrono::Duration::seconds(delay_seconds),
             running: false,
             thread_name: thread_name
@@ -79,7 +79,7 @@ impl WaitInAnotherThread {
 //    }
 //}
 
-impl Future for WaitInAnotherThread {
+impl Future for ExpensiveFuture {
     type Item = ();
     type Error = ();
 
@@ -101,18 +101,19 @@ impl Future for WaitInAnotherThread {
     }
 }
 
-pub fn run()
-{
-//    let wiat = WaitInAnotherThread::new(10);
-//    println!("wait spin started");
-//    wiat.wait_blocking();
-//    println!("wait spin completed");
-
-    let mut reactor = Core::new().unwrap();
-
-    let wiat = WaitInAnotherThread::new(3, "runthread".to_owned());
-    println!("wait future started");
-//    let ret = reactor.run(wiat).unwrap();
-    let ret = wiat.wait();
-    println!("wait future completed. ret == {:?}", ret);
-}
+// turrn into [test]
+//pub fn run()
+//{
+////    let wiat = WaitInAnotherThread::new(10);
+////    println!("wait spin started");
+////    wiat.wait_blocking();
+////    println!("wait spin completed");
+//
+//    let mut reactor = Core::new().unwrap();
+//
+//    let wiat = ExpensiveFuture::new(3, "runthread".to_owned());
+//    println!("wait future started");
+////    let ret = reactor.run(wiat).unwrap();
+//    let ret = wiat.wait();
+//    println!("wait future completed. ret == {:?}", ret);
+//}
