@@ -13,6 +13,9 @@ extern crate chrono;
 #[macro_use]
 extern crate futures;
 
+#[macro_use]
+extern crate lazy_static;
+
 mod sh;
 mod circle;
 mod square;
@@ -60,9 +63,22 @@ mod snoyman_3;
 mod snoyman_closures;
 mod snoyman_streams_exercise6;
 mod snoyman_streams_exercise7;
+mod concurrency_pw_threads;
 mod ExpensiveFuture;
 mod tokio_example_resolveconnect;
 mod str_compare;
+mod concurrency_static_mut;
+mod concurrency_static_lazy_with_mutex;
+mod concurrency_thread_local;
+mod concurrency_thread_local_with_rc;
+mod concurrency_thread_local_with_arc;
+mod concurrency_thread_local_with_rwlock;
+mod concurrency_racing_1;
+mod concurrency_racing_2;
+mod concurrency_send_sync_issue;
+mod concurrency_factory_creatin_send_sync;
+mod global_mutable;
+mod global_mutable_integer;
 mod so1;
 mod channels;
 use std::mem;
@@ -1607,6 +1623,19 @@ fn main() {
 //    snoyman_3::run();
 //    snoyman_closures::run();
 //    snoyman_streams_exercise6::run();
-    snoyman_streams_exercise7::run();
+//    snoyman_streams_exercise7::run();
+//    static_mut::run();
+//    static_lazy_with_mutex::run();
+//    concurrency_pw_threads::run();
+//    concurrency_thread_local::run();
+//    concurrency_thread_local_with_rc::run();
+//    concurrency_thread_local_with_arc::run();
+//    concurrency_thread_local_with_rwlock::run();
+//    global_mutable::run();
+//    global_mutable_integer::run();
+//    concurrency_racing_1::run();
+//    concurrency_racing_2::run();
+//    concurrency_send_sync_issue::run();
+    concurrency_factory_creatin_send_sync::run();
 //    tokio_example_resolveconnect::run();
 }
