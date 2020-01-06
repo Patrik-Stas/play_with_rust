@@ -41,13 +41,11 @@ lazy_static! {
 //static mut SELECTED_STRATEGY_2: dyn GreetingTrait = SimpleFoo {};
 //static mut SELECTED_STRATEGY_3: Box<dyn GreetingTrait> = Box::new(SimpleFoo {});
 
-//
 fn print_unsafe() {
     SELECTED_STRATEGY_LAZY.lock().unwrap().hello()
 }
 
 fn modify_unsafe_to_bar() {
-
     let bar = SimpleBar {};
     let mut val = SELECTED_STRATEGY_LAZY.lock().unwrap();
     *val = Box::new(bar);

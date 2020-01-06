@@ -30,8 +30,24 @@ impl GreetingTrait for ComplexFoo
 }
 
 static mut SELECTED_STRATEGY: &dyn GreetingTrait = &SimpleFoo {};
-//static mut SELECTED_STRATEGY_2: dyn GreetingTrait = SimpleFoo {};
-//static mut SELECTED_STRATEGY_3: Box<dyn GreetingTrait> = Box::new(SimpleFoo {});
+
+fn modify_unsafe_to_complex() {
+    let config = 1;
+    unsafe {
+        match config {
+            1 => SELECTED_STRATEGY = &SimpleFoo {},
+            _ => {
+//                let foo = SimpleFoo { };
+//        let foo = ComplexFoo { some_data: SomeData {} };
+                SELECTED_STRATEGY = & SimpleFoo { };
+                let some_data = SomeData {};
+                SELECTED_STRATEGY = & ComplexFoo { some_data: SomeData {} };;
+//                SELECTED_STRATEGY = & ComplexFoo { some_data: some_data };;
+//                SELECTED_STRATEGY = & ComplexFoo { some_data };;
+            }
+        }
+    }
+}
 
 
 fn print_unsafe() {
@@ -41,20 +57,10 @@ fn print_unsafe() {
 }
 
 fn modify_unsafe_to_bar() {
-
     unsafe {
         SELECTED_STRATEGY = &SimpleBar {};
     }
 }
-
-fn modify_unsafe_to_complex() {
-
-    unsafe {
-        let foo = ComplexFoo { some_data: SomeData {} };
-//        SELECTED_STRATEGY = &foo;
-    }
-}
-
 
 pub fn run()
 {
@@ -62,7 +68,4 @@ pub fn run()
     modify_unsafe_to_bar();
     print_unsafe();
     modify_unsafe_to_complex();
-//    unsafe {
-//        SELECTED_STRATEGY = &ComplexFoo { some_data: some_data }
-//    }
 }
