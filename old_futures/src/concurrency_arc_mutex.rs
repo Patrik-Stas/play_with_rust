@@ -24,8 +24,10 @@ pub fn run() {
                 //
                 // We unwrap() the return value to assert that we are not expecting
                 // threads to ever fail while holding the lock.
+
                 let mut data = sharedData.lock().unwrap();
                 *data += 1;
+
                 println!("Thread {} on iteration {} is updated shared data to {:?}", i, j, data);
             }
             // the lock is unlocked here when `data` goes out of scope.
