@@ -59,6 +59,7 @@ mod devto_future_custom_implementation2;
 mod static_mut_so_question_refreturn;
 mod static_mut_so_question_simplified;
 mod static_mut_so_question_simplified_lazy_static;
+mod static_mut_so_question_lazy_static;
 mod devto_streams;
 mod futures_to_streams;
 mod snoyman_iterators;
@@ -1653,7 +1654,8 @@ fn main() {
 //    ref_keyword_2::run();
 //    ref_keyword_matching::run();
 //    static_lazy_vector::run();
-    static_mut_so_question_simplified_lazy_static::run();
+//    static_mut_so_question_simplified_lazy_static::run();
+    static_mut_so_question_lazy_static::run();
 //    concurrency_arc::run();
 //    concurrency_arc_mutex::run();
 //    concurrency_rw_lock::run();
