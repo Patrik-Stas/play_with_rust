@@ -35,6 +35,8 @@ pub fn getI32(foo: i32) {
 
 }
 
+// NOTE: This example is same as static_mut_so_question_simplified_lazy_static.rs but is using
+// trait objects instead of specific type.
 pub fn run()
 {
     {
