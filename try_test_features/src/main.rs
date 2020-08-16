@@ -45,6 +45,13 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "AAA")]
+    #[cfg(feature = "BBB")]
+    fn test_feature_AAA_BBB() {
+        assert_eq!(1, 1);
+    }
+
+    #[test]
     #[cfg(feature = "PPP")]
     fn test_using_PPP_feature() {
         let p = Person { name: "john".into(), age:23 };

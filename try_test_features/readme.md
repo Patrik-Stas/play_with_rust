@@ -19,6 +19,18 @@ running 2 tests
 test tests::test_no_feature ... ok
 test tests::test_feature_BBB ... ok
 ```
+### Test with Feature AAA and BBB 
+
+```
+cargo test  --features "AAA,BBB"
+```
+```
+running 4 tests
+test tests::test_feature_AAA ... ok
+test tests::test_feature_BBB ... ok
+test tests::test_feature_AAA_BBB ... ok
+test tests::test_no_feature ... ok
+```
 
 ### Test with no feature
 ```
