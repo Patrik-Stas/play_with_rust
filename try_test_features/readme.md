@@ -45,3 +45,5 @@ test tests::test_no_feature ... ok
 - `cargo test` runs everything what matches feature or has no feature specified!
 - you can constrain test imports by feature
 - if a test is using feature conditioned by feature import, it won't compile
+- if test is annotated with 2 features, both features must be enable for the test 
+to execute
