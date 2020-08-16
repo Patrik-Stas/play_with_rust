@@ -47,41 +47,60 @@ impl From<io::Error> for DocumentServiceError
     }
 }
 
-//pub fn create_document(filename: &str) -> Result<File, Box<dyn Error>> // before we implemented custom error
-//pub fn create_document(filename: &str) -> Result<File, DocumentServiceError> // before we created alias on Result using our error type
-pub fn create_document(filename: &str) -> Result<File>
+// pub fn create_document(filename: &str) -> Result<File, Box<dyn Error>> // before we implemented custom error
+pub fn create_document(filename: &str) -> Result<File, DocumentServiceError> // before we created alias on Result using our error type
+// pub fn create_document(filename: &str) -> Result<File>
 {
     if num_documents_created_in_past_minute() > MAX_DOCS_CREATED_PER_MINUTE {
-//        return Err("Create file limit exceeded.".into())
+       // return Err("Create file limit exceeded.").into()
+       // return Err("Create file limit exceeded.".into())
         return Err(DocumentServiceError::RateLimitExceeded)
+        // return Err(DocumentServiceError::RateLimitExceeded)
     }
 
     let file = OpenOptions::new()
         .write(true)
         .create_new(true)
-        .open(filename)?;
-
+        .open(filename)?; // the question mark also handles error mapping, without ? we would have to use result.map_err() as shown below
     Ok(file)
+
+
+    // let newfile_res = OpenOptions::new()
+    //     .write(true)
+    //     .create_new(true)
+    //     .open(filename);
+    // newfile_res
+    //     .map_err(|err| DocumentServiceError::from(err))
 }
 
-pub type Result<T> = result::Result<T, DocumentServiceError>;
+// pub type Result<T> = result::Result<T, DocumentServiceError>;
 // Alias so we don't have to specify our error type on each of our method
 
-pub fn update_document(filename: &str) -> Result<File>
-{
-    unimplemented!()
-}
-
-pub fn delete_document(filename: &str) -> Result<()>
-{
-    unimplemented!()
-}
-
-pub fn read_document(filename: &str) -> Result<File>
-{
-    unimplemented!()
-}
+// pub fn update_document(filename: &str) -> Result<File>
+// {
+//     unimplemented!()
+// }
+//
+// pub fn delete_document(filename: &str) -> Result<()>
+// {
+//     unimplemented!()
+// }
+//
+// pub fn read_document(filename: &str) -> Result<File>
+// {
+//     unimplemented!()
+// }
 
 pub fn run()
 {
+    let filename = "foobar2";
+    let res = create_document(&filename);
+    match res {
+        Ok(file) => {
+            println!("Created file");
+        }
+        Err(err) => {
+            println!("Problem creating file: {:?}", err)
+        }
+    }
 }

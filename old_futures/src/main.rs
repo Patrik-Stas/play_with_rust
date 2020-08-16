@@ -100,6 +100,10 @@ mod ref_keyword_2;
 mod so1;
 mod static_lazy_vector;
 mod channels;
+mod conversion_types;
+mod unsafe_transmute;
+mod unsafe_rawptr;
+mod iterators_patrik;
 use std::mem;
 
 const MEANING_OF_LIFE:u8 = 42; // no fixed address
@@ -1627,6 +1631,7 @@ fn main() {
 //    rim_3_7_quick_error::run();
 //    rim_3_7_error_chain::run();
 //    rim_3_7_failures::run();
+//     conversion_types::run();
 //    stackcheap::run();
 //    pw_move_address::run();
 //    rim_4_4_stemmer::run();
@@ -1655,7 +1660,7 @@ fn main() {
 //    ref_keyword_matching::run();
 //    static_lazy_vector::run();
 //    static_mut_so_question_simplified_lazy_static::run();
-    static_mut_so_question_lazy_static::run();
+//     static_mut_so_question_lazy_static::run();
 //    concurrency_arc::run();
 //    concurrency_arc_mutex::run();
 //    concurrency_rw_lock::run();
@@ -1677,4 +1682,8 @@ fn main() {
 //    concurrency_send_sync_issue::run();
 //    concurrency_factory_creatin_send_sync::run();
 //    tokio_example_resolveconnect::run();
+//     unsafe_transmute::run();
+//     unsafe_rawptr::run();
+    iterators_patrik::run();
+
 }
