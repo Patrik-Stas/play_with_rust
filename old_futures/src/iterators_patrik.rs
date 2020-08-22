@@ -6,7 +6,7 @@ struct PatrikList {
 
 struct DivisableIterator {
     // data: Box<[u32]>, // how to declare slice
-    data: Vector<u32>, // how to declare slice
+    data: Vec<u32>, // how to declare slice
     position: usize,
     divisable_by: u32,
 }
@@ -28,7 +28,7 @@ impl Iterator for DivisableIterator {
 
 impl PatrikList {
     fn getDivisableIterator(&self, divisable_by: u32) -> DivisableIterator {
-        DivisableIterator { divisable_by, data: &self.main, position: 0 }
+        DivisableIterator { divisable_by, data: self.main.clone(), position: 0 }
     }
 }
 
