@@ -104,6 +104,11 @@ mod conversion_types;
 mod unsafe_transmute;
 mod unsafe_rawptr;
 mod iterators_patrik;
+mod iterators_wrapper;
+mod iterator_build_custom;
+mod impl_vs_dyn;
+mod into_iter_pixel;
+mod into_iter;
 use std::mem;
 
 const MEANING_OF_LIFE:u8 = 42; // no fixed address
@@ -1684,6 +1689,10 @@ fn main() {
 //    tokio_example_resolveconnect::run();
 //     unsafe_transmute::run();
 //     unsafe_rawptr::run();
-    iterators_patrik::run();
+//     iterators_patrik::run();
+//     impl_vs_dyn::run();
+//     iterator_build_custom::run();
+//         into_iter::run();
+    into_iter_pixel::run();
 
 }

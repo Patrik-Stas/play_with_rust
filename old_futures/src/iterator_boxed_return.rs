@@ -1,3 +1,6 @@
+use std::collections::HashMap;
+use failure::_core::iter::{Filter, Map};
+
 struct Empty;
 
 struct PatrikList {
@@ -41,9 +44,23 @@ impl IntoIterator for PatrikList {
     }
 }
 
-pub fn run() {
+pub fn divisable_iterator_demo() {
     let m = PatrikList { main: vec!(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20) };
     for item in m.getDivisableIterator(4) {
         println!("Item = {}", item);
     }
+}
+
+pub fn example_take() {
+    let n = vec!(1,2,3,4,5,6,7,8,9,10);
+    let iterator = n.iter();
+
+    for x in n.iter().take(5) {
+        println!("x = {}", x);
+    }
+}
+
+pub fn run() {
+    divisable_iterator_demo();
+    example_take();
 }
