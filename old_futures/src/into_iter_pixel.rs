@@ -1,3 +1,6 @@
+// source of this example:
+// https://stackoverflow.com/questions/30218886/how-to-implement-iterator-and-intoiterator-for-a-simple-struct
+
 struct Pixel {
     r: i8,
     g: i8,

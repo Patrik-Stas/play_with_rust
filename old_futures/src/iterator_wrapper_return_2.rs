@@ -7,8 +7,8 @@ struct DataStructure<I> {
     vectordata: Vec<I>
 }
 
-// impl<I> DataStructure<I> where I : Clone {
-impl<I> DataStructure<I> {
+impl<I> DataStructure<I> where I : Clone {
+// impl<I, J> DataStructure<I> {
     pub fn new() -> DataStructure<I> {
         DataStructure { hashdata: HashMap::new(), vectordata: Vec::new() }
     }
@@ -21,32 +21,11 @@ impl<I> DataStructure<I> {
         IteratorWrapper::new(self.hashdata.iter().skip(skip).take(take))
     }
 
-    // pub fn return_box<'b>(&'b self) -> Box<dyn Iterator<Item = I>+ 'b> {
-    //     let v = vec!(1,2,3,4);
-    //     Box::new(self.vectordata.into_iter())
+    // I'd need something like this I guess. Want to return custom iterator so I can call custom methods on it. But since the iterator is wrapping
+    // another iterator, it forces me to make it generic. Now when I want to return my custom iterator, I am forced to deal with generics...
+    // pub fn return_iterator_wrapper(&self, skip: usize, take: usize) -> IteratorWrapper<J> where J: Iterator<Item = (&String, &I)>  {
+    //     IteratorWrapper::new(self.hashdata.iter().skip(skip).take(take))
     // }
-
-    pub fn box_allocated_data(& self) -> Box<dyn Iterator<Item = i32>> {
-        let v = vec!(1,2,3,4);
-        Box::new(v.into_iter())
-    }
-
-    // pub fn build_boxed_half_iterator_src_cloned(&self) -> Box<dyn Iterator<Item = I>> {
-    //     let iterator = IteratorWrapper::new(self.vectordata.clone().into_iter());
-    //     Box::new(iterator)
-    // }
-
-    // using cloned() on iter(), so only works if I: Clone
-    // pub fn build_boxed_half_iterator_cloned_vals<'b>(&'b self) -> Box<dyn Iterator<Item = I> + 'b> {
-    //     let iterator = IteratorWrapper::new(self.vectordata.iter().cloned());
-    //     Box::new(iterator)
-    // }
-
-    // does not need clone!
-    pub fn build_boxed_half_iterator_refs<'b>(&'b self) -> Box<dyn Iterator<Item = &I> + 'b> {
-        let iterator = IteratorWrapper::new(self.vectordata.iter());
-        Box::new(iterator)
-    }
 }
 
 struct IteratorWrapper<I> {
@@ -70,7 +49,8 @@ impl<I> IteratorWrapper<I> {
 
 pub fn example_use_iterator_directly() {
     println!("\nIteratorWrapper iterating string");
-    for item in IteratorWrapper::new("abcdefghijkl".chars()) {
+    let wrappedChars = IteratorWrapper::new("abcdefghijkl".chars());
+    for item in wrappedChars {
         println!("item={}", item);
     }
 

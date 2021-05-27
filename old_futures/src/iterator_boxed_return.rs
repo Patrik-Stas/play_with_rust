@@ -1,66 +1,78 @@
 use std::collections::HashMap;
+
 use failure::_core::iter::{Filter, Map};
 
-struct Empty;
-
-struct PatrikList {
-    main: Vec<u32>
+#[derive(Debug)]
+struct DataStructure<I> {
+    hashdata: HashMap<String, I>,
+    vectordata: Vec<I>,
 }
 
-struct DivisableIterator {
-    // data: Box<[u32]>, // how to declare slice
-    data: Vec<u32>, // how to declare slice
-    position: usize,
-    divisable_by: u32,
+impl<I> DataStructure<I> {
+    pub fn new() -> DataStructure<I> {
+        DataStructure { hashdata: HashMap::new(), vectordata: Vec::new() }
+    }
+
+    // This does not work because return of "Box<dyn Iterator<Item=&I>>" equals to Box<dyn Iterator<Item=&I> + static>
+    // by default
+    // Whereas the Item=&I by does not have static lifetime inferred
+    // See SO https://stackoverflow.com/questions/42028470/why-is-adding-a-lifetime-to-a-trait-with-the-plus-operator-iteratoritem-foo
+    // for details
+    // pub fn build_boxed_half_iterator_refs_broken(&self) -> Box<dyn Iterator<Item=&I>> {
+    //     let iterator = IteratorWrapper::new(self.vectordata.iter());
+    //     Box::new(iterator)
+    // }
 }
 
-impl Iterator for DivisableIterator {
-    type Item = u32;
+trait HasBoxedIterator<I> {
+    fn build_boxed_half_iterator_refs<'a>(&'a self) -> Box<dyn Iterator<Item = &'a I> + 'a>;
+}
+
+impl<I> HasBoxedIterator<I> for DataStructure<I> {
+    // I suppose lifetime of "Item = &I" is inferred to 'a, so we don't have to specify that one?
+    // However, you might as, why do we return Boxed iterator in a first place? Why don't we
+    // just return "impl Iterator<Item = &I>" instead?
+    // Because if the signature is part of Trait definiton, in trait it's not currently possible
+    // to return values in style of "impl Something". Instead if you want to return a trait based value
+    // from method defined in Trait, you have to do it via boxing trait object.
+    fn build_boxed_half_iterator_refs<'a>(&'a self) -> Box<dyn Iterator<Item = &'a I> + 'a> {
+        let iterator = IteratorWrapper::new(self.vectordata.iter());
+        Box::new(iterator)
+    }
+}
+
+struct IteratorWrapper<I> {
+    iter: I
+}
+
+impl<I> Iterator for IteratorWrapper<I> where I: Iterator {
+    type Item = I::Item;
+
     fn next(&mut self) -> Option<Self::Item> {
-        while self.position < self.data.len() {
-            let val = self.data[self.position];
-            if val % self.divisable_by == 0 {
-                self.position = self.position + 1;
-                return Some(val);
-            }
-            self.position = self.position + 1;
-        }
-        None
+        self.iter.next()
     }
 }
 
-impl PatrikList {
-    fn getDivisableIterator(&self, divisable_by: u32) -> DivisableIterator {
-        DivisableIterator { divisable_by, data: self.main.clone(), position: 0 }
+impl<I> IteratorWrapper<I> {
+    fn new(iter: I) -> IteratorWrapper<I> {
+        IteratorWrapper { iter }
     }
 }
 
-impl IntoIterator for PatrikList {
-    type Item = u32;
-    type IntoIter = std::vec::IntoIter<Self::Item>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        self.main.into_iter()
+pub fn example_iteratore_datastructure() {
+    let mut m = DataStructure::<i32>::new();
+    m.hashdata.insert("Hello".into(), 12);
+    m.hashdata.insert("hi".into(), 23);
+    m.hashdata.insert("adios".into(), 34);
+    m.hashdata.insert("bye".into(), 45);
+    m.hashdata.insert("hola".into(), 55);
+    println!("\nIterating over (1..3) values returned from DataStructure<i32>");
+    for item in m.build_boxed_half_iterator_refs() {
+        println!("Value = {}", item);
     }
 }
 
-pub fn divisable_iterator_demo() {
-    let m = PatrikList { main: vec!(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20) };
-    for item in m.getDivisableIterator(4) {
-        println!("Item = {}", item);
-    }
-}
-
-pub fn example_take() {
-    let n = vec!(1,2,3,4,5,6,7,8,9,10);
-    let iterator = n.iter();
-
-    for x in n.iter().take(5) {
-        println!("x = {}", x);
-    }
-}
 
 pub fn run() {
-    divisable_iterator_demo();
-    example_take();
+    example_iteratore_datastructure();
 }

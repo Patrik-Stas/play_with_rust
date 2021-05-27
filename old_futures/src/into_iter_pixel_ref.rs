@@ -7,24 +7,24 @@ struct Pixel {
     b: i8,
 }
 
-impl IntoIterator for Pixel {
+impl<'a> IntoIterator for &'a Pixel {
     type Item = i8;
-    type IntoIter = PixelIntoIterator;
+    type IntoIter = PixelIterator<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
-        PixelIntoIterator {
+        PixelIterator {
             pixel: self,
             index: 0,
         }
     }
 }
 
-struct PixelIntoIterator {
-    pixel: Pixel,
+struct PixelIterator<'a> {
+    pixel: &'a Pixel,
     index: usize,
 }
 
-impl Iterator for PixelIntoIterator {
+impl<'a> Iterator for PixelIterator<'a> {
     type Item = i8;
     fn next(&mut self) -> Option<i8> {
         let result = match self.index {
@@ -44,7 +44,11 @@ pub fn run() {
         g: 23,
         b: 74,
     };
-    for component in p {
+    println!("Iterating pixel using reference based iterator");
+    // for component in p.into_iter() {
+    //     println!("{}", component);
+    // }
+    for component in &p {
         println!("{}", component);
     }
 }

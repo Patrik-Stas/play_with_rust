@@ -16,6 +16,12 @@ extern crate futures;
 #[macro_use]
 extern crate lazy_static;
 
+extern crate serde;
+#[macro_use]
+extern crate serde_derive;
+#[macro_use]
+extern crate serde_json;
+
 mod sh;
 mod circle;
 mod square;
@@ -103,12 +109,19 @@ mod channels;
 mod conversion_types;
 mod unsafe_transmute;
 mod unsafe_rawptr;
-mod iterators_patrik;
 mod iterators_wrapper;
 mod iterator_build_custom;
 mod impl_vs_dyn;
 mod into_iter_pixel;
+mod into_iter_pixel_ref;
+mod iterator_wrapper_simple;
+mod iterator_divisable;
 mod into_iter;
+mod iterator_wrapper_return;
+mod impl_trait_for_ref;
+mod iterator_boxed_return;
+mod iterator_wrapper_return_2;
+mod serde_option_serialization;
 use std::mem;
 
 const MEANING_OF_LIFE:u8 = 42; // no fixed address
@@ -1687,12 +1700,19 @@ fn main() {
 //    concurrency_send_sync_issue::run();
 //    concurrency_factory_creatin_send_sync::run();
 //    tokio_example_resolveconnect::run();
-//     unsafe_transmute::run();
-//     unsafe_rawptr::run();
-//     iterators_patrik::run();
-//     impl_vs_dyn::run();
-//     iterator_build_custom::run();
-//         into_iter::run();
-    into_iter_pixel::run();
+//    unsafe_transmute::run();
+//    unsafe_rawptr::run();
+//    impl_vs_dyn::run();
+//    iterator_build_custom::run();
+//    into_iter::run();
+//    iterator_divisable::run();
+//    impl_trait_for_ref::run();
+//    into_iter_pixel::run();
+//    into_iter_pixel_ref::run();
+//    iterator_wrapper_return::run();
+//    iterator_wrapper_return::run();
+//     iterator_boxed_return::run();
+//     iterator_wrapper_return_2::run();
+    serde_option_serialization::run();
 
 }
